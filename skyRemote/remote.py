@@ -37,7 +37,6 @@ class remote:
     
     def sendCommand(self, code):
         commandBytes = array('l', [4,1,0,0,0,0, int(math.floor(224 + (code/16))), code % 16])
-        
         try:
             client=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error, msg:
@@ -56,17 +55,24 @@ class remote:
         while 1:
             data=client.recv(24)
             data=data
-            
             if len(data)<24:
                 client.sendall(data[0:l])
                 l=1
             else:
-                client.sendall(buffer(commandBytes))
+            
+                y = [str(i).encode("utf-8") for i in commandBytes]
+                #print "sent> "+str(y)
+                #print (len(y))
+                client.sendall(str(y))
                 commandBytes[1]=0
-                client.sendall(buffer(commandBytes))
+                y = [str(i).encode("utf-8") for i in commandBytes]
+                #print "sent> "+str(y)
+                #print (len(y))
+                client.sendall(str(y))
                 client.close()
                 break
 
             if time.time() > timeout:
                 print "timeout error"
+                client.close()
                 break
