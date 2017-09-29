@@ -36,7 +36,8 @@ class remote:
                 self.sendCommand(toSend)    
     
     def sendCommand(self, code):
-        commandBytes = array('l', [4,1,0,0,0,0, int(math.floor(224 + (code/16))), code % 16])
+        commandBytes = bytearray([4,1,0,0,0,0, int(math.floor(224 + (code/16))), code % 16])
+        
         try:
             client=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error, msg:
@@ -59,16 +60,12 @@ class remote:
                 client.sendall(data[0:l])
                 l=1
             else:
-            
-                y = [str(i).encode("utf-8") for i in commandBytes]
-                #print "sent> "+str(y)
-                #print (len(y))
-                client.sendall(str(y))
+                print
+                client.sendall(commandBytes)
+                
                 commandBytes[1]=0
-                y = [str(i).encode("utf-8") for i in commandBytes]
-                #print "sent> "+str(y)
-                #print (len(y))
-                client.sendall(str(y))
+                client.sendall(commandBytes)
+                
                 client.close()
                 break
 
