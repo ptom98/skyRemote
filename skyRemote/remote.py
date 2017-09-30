@@ -60,7 +60,6 @@ class remote:
                 client.sendall(data[0:l])
                 l=1
             else:
-                print
                 client.sendall(commandBytes)
                 
                 commandBytes[1]=0
