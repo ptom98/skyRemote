@@ -28,7 +28,7 @@ class remote:
                 toSend=self.getCommand(item)
                 if toSend:
                     self.sendCommand(toSend)
-                    time.sleep(0.5)
+                    time.sleep(0.1)
                     
         else:
             toSend=self.getCommand(sequence)
